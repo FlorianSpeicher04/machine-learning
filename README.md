@@ -9,7 +9,7 @@ As a data basis, we use a publicly available Steam Games dataset that we found o
 
 ## Dataset
 
-We use the [Steam Games Dataset from Kaggle](https://www.kaggle.com/datasets/trolukovich/steam-games-complete-dataset).
+We use the [Steam Games Dataset from Kaggle](https://www.kaggle.com/datasets/artermiloff/steam-games-dataset/data).
 
 ## Contributors
 
