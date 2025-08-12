@@ -134,7 +134,7 @@ multi_target_clf.fit(X_train, y_train)
 # predict against test data
 y_pred = multi_target_clf.predict(X_test)
 
-# classify
+# print prec, recall, f1 etc
 print(classification_report(y_test, y_pred, zero_division=0.0))
 
 
