@@ -30,7 +30,7 @@ print("DROP")
 print("STRUCTURE")
 
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer
+from sklearn.preprocessing import FunctionTransformer
 
 
 # desc, genres, tags
@@ -65,6 +65,7 @@ dataset.dropna(inplace=True)
 
 
 ##### STRUCTURIZE GENRES to onehot
+from sklearn.preprocessing import MultiLabelBinarizer
 import ast
 #serialize array
 dataset['genres'] = dataset['genres'].map(lambda s: ast.literal_eval(s)) 
@@ -94,8 +95,6 @@ print(tfidf_df)
 ##### MODEL
 print("MODEL")
 
-from sklearn.datasets import make_multilabel_classification
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.metrics import classification_report
@@ -108,24 +107,17 @@ y = genres_df
 # cleanup datapoints that dont have a target value (all target columns are 0)
 mask = y.sum(axis=1).map(lambda x: x > 0)
 #print((mask == False).sum()) #31 cases with all target columns 0
-
 X_clean = X[mask]
 y_clean = y[mask]
 
-
-print(X_clean)
-print(y_clean)
-
 # Split dataset
+from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X_clean, y_clean, random_state=0)
 
 
-print(X_train)
-print(y_train)
-
 # we want to have multiple possible outputs (multi-label-classficiation) -> multioutputclassifier
 # logi regression is our base system
-# n_jobs=1 since there seems to be some multithreading join issue in sklearn
+# n_jobs=1 since there seems to be some multithreading join issue in sklearn (or my pc is too bad)
 multi_target_clf = MultiOutputClassifier(LogisticRegression(max_iter=1337, random_state=0), n_jobs=1)
 
 # model training
