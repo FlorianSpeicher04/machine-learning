@@ -31,7 +31,7 @@ plt.bar(x, [results["cleaned_2k"][m] for m in models], width=0.25, label="cleane
 plt.bar([i + 0.25 for i in x], [results["cleaned_10k"][m] for m in models], width=0.25, label="cleaned_10k")
 
 plt.xticks(x, models, rotation=45)
-plt.ylabel("Weighted F1-Score")
+plt.ylabel("F1-Score")
 plt.title("Model Performance across Datasets")
 plt.legend()
 plt.tight_layout()
