@@ -22,17 +22,20 @@ for dataset_name, folder in datasets.items():
                         results[dataset_name][model_name] = f1_score
 
 # Plot
-models = sorted(results["cleaned"].keys())  # alphabetisch sortieren für gleiche Reihenfolge
+#models = sorted(results["cleaned_2k"].keys())  # alphabetisch sortieren für gleiche Reihenfolge
+models = dict(sorted(results["cleaned_2k"].items(), key=lambda i: i[1], reverse=True)) # nach values sortieren
 x = range(len(models))
 
 plt.figure(figsize=(12,6))
-plt.bar([i - 0.25 for i in x], [results["cleaned"][m] for m in models], width=0.25, label="cleaned")
-plt.bar(x, [results["cleaned_2k"][m] for m in models], width=0.25, label="cleaned_2k")
-plt.bar([i + 0.25 for i in x], [results["cleaned_10k"][m] for m in models], width=0.25, label="cleaned_10k")
+#plt.bar([i - 0.25 for i in x], [results["cleaned"][m] for m in models], width=0.25, label="cleaned")
+plt.bar(x, [results["cleaned_2k"][m] for m in models], width=0.5)#, label="cleaned_2k")
+#plt.bar([i + 0.25 for i in x], [results["cleaned_10k"][m] for m in models], width=0.25, label="cleaned_10k")
 
-plt.xticks(x, models, rotation=45)
-plt.ylabel("F1-Score")
+plt.xticks(x, models, rotation=90)
+plt.ylim(0, 1) # min max
+plt.ylabel("Weighted F1-Score")
 plt.title("Model Performance across Datasets")
-plt.legend()
+#plt.legend()
 plt.tight_layout()
+plt.savefig('compare_graph_latest.png')
 plt.show()

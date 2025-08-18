@@ -27,6 +27,10 @@ from sklearn.dummy import DummyClassifier
 from sklearn.neural_network import MLPClassifier
 
 set_config(transform_output="pandas") # dataframe supremacy
+
+jobs = 12
+max_iter = 3000
+
 def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
     dataset = pd.read_csv(dataset,sep=",")
     # desc, genres, tags
@@ -76,7 +80,7 @@ def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
     y_clean = y[mask]
     # Split dataset
     return train_test_split(X_clean, y_clean, random_state=0)
-def comparison(X_train, X_test, y_train, y_test, estimator, jobs: int = 1): #returns class_report
+def comparison(X_train, X_test, y_train, y_test, estimator,): #returns class_report
     multi_target_clf = MultiOutputClassifier(estimator, n_jobs=jobs) # LogisticRegression(max_iter=1337, random_state=0)
     # model training
     multi_target_clf.fit(X_train, y_train)
@@ -84,39 +88,21 @@ def comparison(X_train, X_test, y_train, y_test, estimator, jobs: int = 1): #ret
     y_pred = multi_target_clf.predict(X_test)
     return classification_report(y_test, y_pred, zero_division=0.0)
 datasets = [
-    'games_march2025_cleaned_2k.csv',
-    #'games_march2025_cleaned_10k.csv',
+    #'games_march2025_cleaned_2k.csv',
+    'games_march2025_cleaned_10k.csv',
     #'games_march2025_cleaned.csv'
 ]
-
-max_iter = 3000  # <-- set your desired value here
-
 estimators = {
-    "LogisticRegression": LogisticRegression(random_state=0, max_iter=max_iter),
     "RidgeClassifier": RidgeClassifier(random_state=0, max_iter=max_iter),
     "PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
     "Perceptron": Perceptron(random_state=0, max_iter=max_iter),
     "SGDClassifier": SGDClassifier(random_state=0, max_iter=max_iter),
-    "KNeighborsClassifier": KNeighborsClassifier(),
     "NearestCentroid": NearestCentroid(),
-    "RadiusNeighborsClassifier": RadiusNeighborsClassifier(),
-    "LinearSVC-i5000": LinearSVC(random_state=0, max_iter=max_iter),
-    "SVC": SVC(random_state=0, max_iter=max_iter),
-    "DecisionTreeClassifier": DecisionTreeClassifier(random_state=0),
-    "RandomForestClassifier": RandomForestClassifier(random_state=0),
-    "ExtraTreesClassifier": ExtraTreesClassifier(random_state=0),
-    "BaggingClassifier": BaggingClassifier(random_state=0),
-    "AdaBoostClassifier": AdaBoostClassifier(random_state=0),
+    "LinearSVC": LinearSVC(random_state=0, max_iter=max_iter),
     "GradientBoostingClassifier": GradientBoostingClassifier(random_state=0),
     "HistGradientBoostingClassifier": HistGradientBoostingClassifier(random_state=0, max_iter=max_iter),
-    "GaussianNB": GaussianNB(),
-    "MultinomialNB": MultinomialNB(),
-    "BernoulliNB": BernoulliNB(),
-    "ComplementNB": ComplementNB(),
     "LinearDiscriminantAnalysis": LinearDiscriminantAnalysis(),
-    "QuadraticDiscriminantAnalysis": QuadraticDiscriminantAnalysis(),
-    "MLPClassifier-i10000": MLPClassifier(max_iter=10000, random_state=0),
-    "DummyClassifier": DummyClassifier(random_state=0)
+    "MLPClassifier": MLPClassifier(random_state=0, max_iter=int(max_iter/20), early_stopping=True),
 }
 
 #"VotingClassifier": VotingClassifier(estimators=[('lr', LogisticRegression()), ('rf', RandomForestClassifier())]),
@@ -131,7 +117,7 @@ for dataset in datasets:
     X_train, X_test, y_train, y_test = prepDataset(dataset)
     for esti in estimators:
         print("model: " + esti)
-        compari = comparison(X_train, X_test, y_train, y_test, estimators[esti], 1) #TODO: change the job count if you can
+        compari = comparison(X_train, X_test, y_train, y_test, estimators[esti])
         print("open")
         f = open(folder + "/" + esti +".txt", mode="w+", encoding="utf-8")
         f.write(compari)
