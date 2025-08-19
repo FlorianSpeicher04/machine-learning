@@ -2,6 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn import set_config
+import gc
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer
@@ -28,8 +29,9 @@ from sklearn.neural_network import MLPClassifier
 
 set_config(transform_output="pandas") # dataframe supremacy
 
-jobs = 3
+jobs = 12
 max_iter = 3000
+min_entries = 5
 
 def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
     dataset = pd.read_csv(dataset,sep=",")
@@ -73,12 +75,35 @@ def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
     print("MODEL")
     X = tfidf_df
     y = genres_df
+
+    # remove genres that have less than min_entries entries -> probability of broken split to big
+    mask = (y == 1).sum() >= min_entries
+    print(y.shape)
+    y_prep = y.loc[:, mask]
+    print(y_prep.shape)
+    del mask
+    del y
+
     # cleanup datapoints that dont have a target value (all target columns are 0)
-    mask = y.sum(axis=1).map(lambda x: x > 0)
+    mask = y_prep.sum(axis=1).map(lambda x: x > 0)
     #print((mask == False).sum()) #31 cases with all target columns 0
     X_clean = X[mask]
-    y_clean = y[mask]
-    print(y_clean)
+    y_clean = y_prep[mask]
+
+    # clean ram edition
+    del dataset
+    del column_transformer #-
+    del mlb_genres
+    del genres_encoded
+    del genres_df #-
+    del tfidf_df
+    del vectorizer
+    del tfidf_matrix #-
+    del X
+    del y_prep
+    del mask
+    gc.collect()
+
     # Split dataset
     return train_test_split(X_clean, y_clean, random_state=0)
 def comparison(X_train, X_test, y_train, y_test, estimator,): #returns class_report
@@ -96,7 +121,7 @@ datasets = [
 estimators = {
     #"RidgeClassifier": RidgeClassifier(random_state=0, max_iter=max_iter),
     #"PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
-    #"Perceptron": Perceptron(random_state=0, max_iter=max_iter),
+    "Perceptron": Perceptron(random_state=0, max_iter=max_iter),
     "SGDClassifier": SGDClassifier(random_state=0, max_iter=max_iter),
     "NearestCentroid": NearestCentroid(),
     "LinearSVC": LinearSVC(random_state=0, max_iter=max_iter),
