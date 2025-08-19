@@ -28,7 +28,7 @@ from sklearn.neural_network import MLPClassifier
 
 set_config(transform_output="pandas") # dataframe supremacy
 
-jobs = 12
+jobs = 3
 max_iter = 3000
 
 def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
@@ -78,6 +78,7 @@ def prepDataset(dataset): #returns X_train, X_test, y_train, y_test
     #print((mask == False).sum()) #31 cases with all target columns 0
     X_clean = X[mask]
     y_clean = y[mask]
+    print(y_clean)
     # Split dataset
     return train_test_split(X_clean, y_clean, random_state=0)
 def comparison(X_train, X_test, y_train, y_test, estimator,): #returns class_report
@@ -93,9 +94,9 @@ datasets = [
     #'games_march2025_cleaned.csv'
 ]
 estimators = {
-    "RidgeClassifier": RidgeClassifier(random_state=0, max_iter=max_iter),
-    "PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
-    "Perceptron": Perceptron(random_state=0, max_iter=max_iter),
+    #"RidgeClassifier": RidgeClassifier(random_state=0, max_iter=max_iter),
+    #"PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
+    #"Perceptron": Perceptron(random_state=0, max_iter=max_iter),
     "SGDClassifier": SGDClassifier(random_state=0, max_iter=max_iter),
     "NearestCentroid": NearestCentroid(),
     "LinearSVC": LinearSVC(random_state=0, max_iter=max_iter),
