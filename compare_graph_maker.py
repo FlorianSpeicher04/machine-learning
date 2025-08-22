@@ -18,7 +18,7 @@ for dataset_name, folder in datasets.items():
                 for line in f:
                     if line.strip().startswith("weighted avg"):
                         parts = line.split()
-                        f1_score = float(parts[3])  # precision recall f1-score support
+                        f1_score = float(parts[4])  # precision recall f1-score support
                         results[dataset_name][model_name] = f1_score
 
 # Plot
