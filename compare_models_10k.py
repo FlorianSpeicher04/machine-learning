@@ -120,13 +120,14 @@ datasets = [
 ]
 estimators = {
     #"RidgeClassifier": RidgeClassifier(random_state=0, max_iter=max_iter),
-    #"PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
+    "PassiveAggressiveClassifier": PassiveAggressiveClassifier(random_state=0, max_iter=max_iter),
     #"Perceptron": Perceptron(random_state=0, max_iter=max_iter),
     #"SGDClassifier": SGDClassifier(random_state=0, max_iter=max_iter),
     #"NearestCentroid": NearestCentroid(),
-    #"LinearSVC": LinearSVC(random_state=0, max_iter=max_iter),
+    "LinearSVC": LinearSVC(random_state=0, max_iter=max_iter),
+    #"AdaBoost": AdaBoostClassifier(),
     #"GradientBoostingClassifier": GradientBoostingClassifier(random_state=0),
-    "HistGradientBoostingClassifier": HistGradientBoostingClassifier(random_state=0, max_iter=max_iter),
+    #"HistGradientBoostingClassifier": HistGradientBoostingClassifier(random_state=0, max_iter=max_iter),
     #"LinearDiscriminantAnalysis": LinearDiscriminantAnalysis(),
     #"MLPClassifier": MLPClassifier(random_state=0, max_iter=int(max_iter/20), early_stopping=True),
 }
