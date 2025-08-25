@@ -46,6 +46,6 @@ Our model achieves reasonable performance given the dataset size and computation
 
 ## Contributors
 
-- Maximilian Kany
+- Maximilian Kany 5016118
 - Florian Speicher 5014185
 - Tim Wall 5014365
