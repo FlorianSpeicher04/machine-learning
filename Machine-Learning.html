@@ -7517,7 +7517,12 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Machine-Learning-project-in-SoSe-2025-at-HTW-Saar">Machine Learning project in SoSe 2025 at HTW Saar<a class="anchor-link" href="#Machine-Learning-project-in-SoSe-2025-at-HTW-Saar">¶</a></h1><h2 id="Idea">Idea<a class="anchor-link" href="#Idea">¶</a></h2><p>The goal of this project is predicting the genre(s) of a game/bundle through its given description(s)</p>
+<h1 id="Machine-Learning-project-in-SoSe-2025-at-HTW-Saar">Machine Learning project in SoSe 2025 at HTW Saar<a class="anchor-link" href="#Machine-Learning-project-in-SoSe-2025-at-HTW-Saar">¶</a></h1><h2 id="Contributors">Contributors<a class="anchor-link" href="#Contributors">¶</a></h2><ul>
+<li>Maximilian Kany (5016118)</li>
+<li>Florian Speicher (5014185)</li>
+<li>Tim Wall (5014365)</li>
+</ul>
+<h2 id="Idea">Idea<a class="anchor-link" href="#Idea">¶</a></h2><p>The goal of this project is predicting the genre(s) of a game/bundle through its given description(s)</p>
 <h2 id="Dataset">Dataset<a class="anchor-link" href="#Dataset">¶</a></h2><p>For our project we use a Steam Dataset provided on moodle, since it has all information we plan on using.
 The Dataset has been cut to only 2000 data points to be runnable on weaker devices.</p>
 </div>
@@ -8184,10 +8189,10 @@ When comparing these models between datasets, it is evident that a bigger datase
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Evaluation">Evaluation<a class="anchor-link" href="#Evaluation">¶</a></h1><p>We evaluate our model by comparing the test data with the predicted data. We are using the worst case scenario by setting zero_division=0.0 in the classification report. This means that if a metric cannot be calculated due to division by zero, it is set to 0.0. Setting this parameter to 1.0 (best case) does not significantly change the results.</p>
-<p>Our approach involves training one model per genre, resulting in a total of 12 models. Each model predicts a specific genre, and the combined results of all models are shown at the bottom of the report. The input features are represented by x, and the output labels by y.</p>
-<p>Key metrics such as precision and recall are calculated for each class. These metrics indicate whether all classes are recognized and how accurate the predictions are. Notably, only one class achieves perfect 1.0 precision. For some reason, the Early Access class performs particularly poorly. The F1 score is also included in the evaluation, as it provides a balanced measure of precision and recall. The support column indicates the number of samples for each class.</p>
-<p>It is noteworthy that some of the top 10 words influencing the decision process are related to brands, such as "ea" in Sports, even though we removed the developer and publisher columns. Some words, like "brokkoli" in Racing, are not obviously related to the genre, which may indicate slight overfitting or the presence of only a few relevant but fitting data points in the dataset.</p>
-<p>Generally, a model is considered very good with an F1 score above 0.8, and good with a score above 0.7. In our case, the F1 scores are 0.69 and 0.54, which means our model performs moderately well up to good. The low macro and micro scores are mainly due to problematic classes, but overall, the weighted average and samples average are quite acceptable.</p>
+<p>Our approach involves training one model per genre, resulting in a total of 12 models for the 2k dataset. Each model predicts a specific genre, and the combined results of all models are shown at the bottom of the report. The input features are represented by X, and the output labels by y.</p>
+<p>Key metrics such as precision and recall are calculated for each class. These metrics indicate whether all classes are recognized and how accurate the predictions are. Notably, two classes achieve perfect 1.0 precision. For some reason, the Early Access class performs particularly poorly. The F1 score is also included in the evaluation, as it provides a balanced measure of precision and recall. The support column indicates the number of samples for each class.</p>
+<p>It is noteworthy that some of the top 10 words influencing the decision process are related to brands or game names, such as "vrchat" in Early Access and Sports, "vermintide" in Indie, in "ea" in Sports, since the description was not cleaned of developer, publisher and game names. Some words, like "brokkoli" in Racing, are not obviously related to the genre, which may indicate overfitting or (much more likely) the presence of only a few fitting data points in the dataset. Generally, all classes with less than 100 datapoints seem to have a very low recall but very high precision.</p>
+<p>A model is considered very good with an F1 score above 0.8, and good with a score above 0.7. In our case, the F1 micro and macro scores are 0.69 and 0.54, which means our model performs decent up to good. The low macro scores are mainly due to problematic classes, but overall, the weighted average and samples average are quite acceptable for a dataset of this size.</p>
 </div>
 </div>
 </div>
@@ -8298,12 +8303,12 @@ Most important words of class 'Strategy':
 </li>
 <li><p>Hyperparameter validation should also be performed. For example, in LinearSVC, the C parameter controls the learning rate and could be further optimized.</p>
 </li>
-<li><p>Instead of a simple train-test split, k-fold cross validation should be used to achieve better data mixing and more robust results.</p>
+<li><p>Instead of a simple train-test split, k-fold cross validation without a fixed random_state should be used to prevent overfitting, better data mixing and more robust results.</p>
 </li>
-<li><p>Additionally, ensemble learning methods could be considered to further improve performance.</p>
+<li><p>Additionally, ensemble learning methods could further improve performance.</p>
 </li>
 </ul>
-<p>The biggest limitation of our dataset is the presence of too many languages but too few entries for each, which is also constrained by our computing resources.</p>
+<p>The biggest limitation of our dataset is the presence of many (especially CJK-) languages but too few entries for each, which is also constrained by our computing resources.</p>
 </div>
 </div>
 </div>
@@ -8317,7 +8322,7 @@ Most important words of class 'Strategy':
 <h1 id="Conclusion-and-outlook">Conclusion and outlook<a class="anchor-link" href="#Conclusion-and-outlook">¶</a></h1><p>To conclude we can say that our model performs reasonably well for the intended application. With a larger dataset, the results would likely improve further. Considering the points mentioned above, it is quite impressive that the model achieves these results using only a small dataset and limited computational resources.</p>
 <p>Our collaboration as a team worked very smoothly throughout the project. Communication and planning were effective, allowing us to coordinate our tasks efficiently and make steady progress.</p>
 <p>The main challenge we faced was the limited computational resources available to us. Especially when working with the 10k dataset, training the models for statistical evaluation took a considerable amount of time. To address this, each team member ran different models in parallel on their own machines, with some training processes running for several days.</p>
-<p>Due to these computational constraints, we decided not to process the full dataset with 80,000 entries. Even though we had access to very powerful PCs equipped with the latest high-end components, the training times were still prohibitively long. As a result, we focused our efforts on the smaller datasets to ensure we could complete the project within a reasonable timeframe.</p>
+<p>Due to these computational constraints, we decided not to process the full dataset with 80,000 entries. Even though we had access to PCs equipped with the mid to high-range components, the training times were still prohibitively long. As a result, we focused our efforts on the smaller datasets to ensure we could complete the project within a reasonable timeframe.</p>
 <p>In summary, this project provided us with valuable insights into the challenges and opportunities of machine learning in a real-world context. Despite the limitations we faced, we were able to develop a functioning model and gain practical experience in data preprocessing, model selection, and evaluation. We are proud of what we achieved as a team and look forward to applying the knowledge and skills gained here to future projects.</p>
 </div>
 </div>
